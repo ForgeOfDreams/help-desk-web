@@ -29,7 +29,6 @@
     }
   },
   "rules": {
-    "react/react-in-jsx-scope": "off",
     "eslint/no-unused-vars": [
       "error",
       {
@@ -44,6 +43,7 @@
     "import/no-cycle": "error",
     "jsx-a11y/alt-text": "error",
     "vitest/no-focused-tests": "error",
-    "vitest/no-disabled-tests": "error"
+    "vitest/no-disabled-tests": "error",
+    "react/react-in-jsx-scope": "off"
   }
 }

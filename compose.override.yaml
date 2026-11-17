@@ -1,0 +1,35 @@
+services:
+  web:
+    image: help-desk-web-dev:${WEB_IMAGE_TAG:-dev}
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+      target: base
+      args:
+        NODE_VERSION: ${NODE_VERSION:-22.23.5}
+    ports:
+      - "${WEB_DEV_PORT:-5173}:5173"
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+      - type: volume
+        source: web_node_modules
+        target: /usr/src/app/node_modules
+    # Install dependencies only when the lockfile changes. The hash marker is
+    # stored in the persistent node_modules volume, so normal restarts are fast.
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        expected="$$(sha256sum package-lock.json | cut -d ' ' -f 1)"
+        marker="node_modules/.package-lock.sha256"
+        actual="$$(cat "$$marker" 2>/dev/null || true)"
+        if [ ! -x node_modules/.bin/vite ] || [ "$$actual" != "$$expected" ]; then
+          npm ci --no-audit --no-fund
+          printf '%s' "$$expected" > "$$marker"
+        fi
+        exec npm run dev -- --host 0.0.0.0 --port 5173 --strictPort
+
+volumes:
+  web_node_modules:
