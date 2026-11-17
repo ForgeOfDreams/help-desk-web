@@ -37,7 +37,6 @@
         "caughtErrorsIgnorePattern": "^_"
       }
     ],
-    "react/jsx-uses-react": "off",
     "typescript/no-explicit-any": "warn",
     "react/jsx-no-target-blank": "error",
     "react/no-danger": "error",
