@@ -29,6 +29,7 @@
     }
   },
   "rules": {
+    "react/react-in-jsx-scope": "off",
     "eslint/no-unused-vars": [
       "error",
       {
